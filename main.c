@@ -87,15 +87,15 @@ int main(int argc, char **argv) {
 
     lock_sleep = gtk_button_new_with_label("lock & sleep (2)");
     g_signal_connect(lock_sleep, "clicked", G_CALLBACK(do_lock_and_sleep), NULL);
-    gtk_box_pack_end((GtkBox *)box, lock_sleep, TRUE, TRUE, 0);
+    gtk_box_pack_start((GtkBox *)box, lock_sleep, TRUE, TRUE, 0);
 
     reboot = gtk_button_new_with_label("reboot (3)");
     g_signal_connect(reboot, "clicked", G_CALLBACK(do_restart), NULL);
-    gtk_box_pack_end((GtkBox *)box, reboot, TRUE, TRUE, 0);
+    gtk_box_pack_start((GtkBox *)box, reboot, TRUE, TRUE, 0);
 
     shutdown = gtk_button_new_with_label("shutdown (4)");
     g_signal_connect(shutdown, "clicked", G_CALLBACK(do_shutdown), NULL);
-    gtk_box_pack_end((GtkBox *)box, shutdown, TRUE, TRUE, 0);
+    gtk_box_pack_start((GtkBox *)box, shutdown, TRUE, TRUE, 0);
 
     gtk_widget_show_all(window);
     gtk_main();
