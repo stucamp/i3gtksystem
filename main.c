@@ -57,12 +57,14 @@ static gboolean check_focus(GtkWidget *widget, GdkEventFocus *event, gpointer da
 }
 
 int main(int argc, char **argv) {
-    GtkWidget *window, *grid, *lockit, *lock_sleep, *reboot, *shutdown;
+    GtkWidget *window;
+    GtkWidget *box, *lockit, *lock_sleep, *reboot, *shutdown;
     gtk_init(&argc, &argv);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 //  Set title in case WM ignores no decorators
     gtk_window_set_title((GtkWindow *)window, "What do?");
+    gtk_window_set_gravity((GtkWindow *)window, GDK_GRAVITY_CENTER);
 
 //  Sets window to open center screen and have not header bar/decorators
     gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER_ALWAYS);
@@ -76,24 +78,24 @@ int main(int argc, char **argv) {
 
 
 //  Creates simple window with 4 buttons, in a grid.
-    grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_container_add(GTK_CONTAINER(window), box);
 
     lockit = gtk_button_new_with_label("lock screen (1)");
     g_signal_connect(lockit, "clicked", G_CALLBACK(do_lockscreen), NULL);
-    gtk_grid_attach(GTK_GRID(grid), lockit, 0, 0, 1, 1);
+    gtk_box_pack_start((GtkBox *)box, lockit, TRUE, TRUE, 0);
 
     lock_sleep = gtk_button_new_with_label("lock & sleep (2)");
     g_signal_connect(lock_sleep, "clicked", G_CALLBACK(do_lock_and_sleep), NULL);
-    gtk_grid_attach(GTK_GRID(grid), lock_sleep, 1, 0, 1, 1);
+    gtk_box_pack_end((GtkBox *)box, lock_sleep, TRUE, TRUE, 0);
 
     reboot = gtk_button_new_with_label("reboot (3)");
     g_signal_connect(reboot, "clicked", G_CALLBACK(do_restart), NULL);
-    gtk_grid_attach(GTK_GRID(grid), reboot, 2, 0, 1, 1);
+    gtk_box_pack_end((GtkBox *)box, reboot, TRUE, TRUE, 0);
 
     shutdown = gtk_button_new_with_label("shutdown (4)");
     g_signal_connect(shutdown, "clicked", G_CALLBACK(do_shutdown), NULL);
-    gtk_grid_attach(GTK_GRID(grid), shutdown, 3, 0, 1, 1);
+    gtk_box_pack_end((GtkBox *)box, shutdown, TRUE, TRUE, 0);
 
     gtk_widget_show_all(window);
     gtk_main();
