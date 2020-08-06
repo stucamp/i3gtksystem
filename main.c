@@ -12,6 +12,11 @@ void do_shutdown()
     system("systemctl poweroff");
 }
 
+void do_logout()
+{
+	system("i3-msg exit");
+}
+	
 void do_lockscreen()
 {
     system("i3lock-fancy -g");
@@ -37,11 +42,16 @@ static gboolean check_key(GtkWidget *widget, GdkEventKey *event, gpointer data)
 		    gtk_main_quit();
 		    return TRUE;
 	    case GDK_KEY_3:
-		    do_restart();
+		    do_logout();
     		    gtk_widget_destroy(widget);
 		    gtk_main_quit();
 		    return TRUE;
 	    case GDK_KEY_4:
+		    do_restart();
+    		    gtk_widget_destroy(widget);
+		    gtk_main_quit();
+		    return TRUE;
+	    case GDK_KEY_5:
 		    do_shutdown();
     		    gtk_widget_destroy(widget);
 		    gtk_main_quit();
@@ -63,7 +73,7 @@ static gboolean check_focus(GtkWidget *widget, GdkEventFocus *event, gpointer da
 
 int main(int argc, char **argv) 
 {
-    GtkWidget *window, *box, *lockit, *lock_sleep, *reboot, *shutdown;
+    GtkWidget *window, *box, *lockit, *lock_sleep, *logout, *reboot, *shutdown;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -99,12 +109,17 @@ int main(int argc, char **argv)
 		     G_CALLBACK(do_lock_and_sleep), NULL);
     gtk_box_pack_start((GtkBox *)box, lock_sleep, TRUE, TRUE, 0);
 
-    reboot = gtk_button_new_with_label("reboot (3)");
+    logout = gtk_button_new_with_label("logout (3)");
+    g_signal_connect(logout, "clicked", 
+		     G_CALLBACK(do_logout), NULL);
+    gtk_box_pack_start((GtkBox *)box, logout, TRUE, TRUE, 0);
+
+    reboot = gtk_button_new_with_label("reboot (4)");
     g_signal_connect(reboot, "clicked", 
 		     G_CALLBACK(do_restart), NULL);
     gtk_box_pack_start((GtkBox *)box, reboot, TRUE, TRUE, 0);
 
-    shutdown = gtk_button_new_with_label("shutdown (4)");
+    shutdown = gtk_button_new_with_label("shutdown (5)");
     g_signal_connect(shutdown, "clicked", 
 		     G_CALLBACK(do_shutdown), NULL);
     gtk_box_pack_start((GtkBox *)box, shutdown, TRUE, TRUE, 0);
