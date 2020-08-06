@@ -40,34 +40,30 @@ static void check_key(GtkWidget *widget, GdkEventKey *event, gpointer data)
 	    case GDK_KEY_1:
 		    do_lockscreen();
     		    dest_and_quit(widget);
-		    break;
 	    case GDK_KEY_2:
 		    do_lock_and_sleep();
     		    dest_and_quit(widget);
-		    break;
 	    case GDK_KEY_3:
 		    do_logout();
     		    dest_and_quit(widget);
-		    break;
 	    case GDK_KEY_4:
 		    do_restart();
     		    dest_and_quit(widget);
-		    break;
 	    case GDK_KEY_5:
 		    do_shutdown();
     		    dest_and_quit(widget);
-		    break;
-	    default:
-		    dest_and_quit(widget);
     }
+    dest_and_quit(widget);
 }
 
 
-static void check_focus(GtkWidget *widget, GdkEventFocus *event, gpointer data)
+static gboolean check_focus(GtkWidget *widget, GdkEventFocus *event, gpointer data)
 {
     if (event->type == GDK_FOCUS_CHANGE) {
-	dest_and_quit(widget);
+        gtk_main_quit();
+        return TRUE;
     }
+    return FALSE;
 }
 
 int main(int argc, char **argv) 
@@ -76,28 +72,25 @@ int main(int argc, char **argv)
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    
-    //  Set title in case WM ignores no decorators
+//  Set title in case WM ignores no decorators
     gtk_window_set_title((GtkWindow *)window, "What do?");
     gtk_window_set_gravity((GtkWindow *)window, GDK_GRAVITY_CENTER);
 
-    //  Sets window to open center screen and have not header bar/decorators
+//  Sets window to open center screen and have not header bar/decorators
     gtk_window_set_position((GtkWindow *)window, GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_set_decorated((GtkWindow *)window, FALSE);
-
-    //  Set to close app if button push isn't 1, 2, 3, or 4
+//  Set to close app if button push isn't 1, 2, 3, or 4
     g_signal_connect(window, "key_press_event", 
 		     G_CALLBACK (check_key), NULL);
-    
-    //  Set to close app if focus is lost
+//  Set to close app if focus is lost
     g_signal_connect(window, "focus_out_event", 
 		     G_CALLBACK (check_focus), NULL);
-
-    //  Added listener in case WM ignores no decorators/headerbar
+//  Added listener in case WM ignores no decorators
     g_signal_connect(window, "destroy", 
 		     G_CALLBACK(gtk_main_quit), NULL);
 
-    //  Creates simple window with 4 buttons, in a grid.
+
+//  Creates simple window with 4 buttons, in a grid.
     box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_add(GTK_CONTAINER(window), box);
 
