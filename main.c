@@ -2,22 +2,22 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-void do_restart(GtkWidget *widget, gpointer data)
+void do_restart()
 {
     system("systemctl reboot");
 }
 
-void do_shutdown(GtkWidget *widget, gpointer data)
+void do_shutdown()
 {
     system("systemctl poweroff");
 }
 
-void do_lockscreen(GtkWidget *widget, gpointer data)
+void do_lockscreen()
 {
     system("i3lock-fancy -g");
 }
 
-void do_lock_and_sleep(GtkWidget *widget, gpointer data)
+void do_lock_and_sleep()
 {
     system("i3lock-fancy -g && systemctl suspend");
 }
@@ -27,19 +27,19 @@ static gboolean check_key(GtkWidget *widget, GdkEventKey *event, gpointer data)
     switch (event->keyval)
     {
 	    case GDK_KEY_1:
-		    do_lockscreen(widget, data);
+		    do_lockscreen();
 		    gtk_main_quit();
 		    return TRUE;
 	    case GDK_KEY_2:
-		    do_lock_and_sleep(widget, data);
+		    do_lock_and_sleep();
 		    gtk_main_quit();
 		    return TRUE;
 	    case GDK_KEY_3:
-		    do_restart(widget, data);
+		    do_restart();
 		    gtk_main_quit();
 		    return TRUE;
 	    case GDK_KEY_4:
-		    do_shutdown(widget, data);
+		    do_shutdown();
 		    gtk_main_quit();
 		    return TRUE;
     }
