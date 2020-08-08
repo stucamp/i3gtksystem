@@ -1,3 +1,4 @@
 i3sysdialog
 .idea/
 cmake*
+*.o
