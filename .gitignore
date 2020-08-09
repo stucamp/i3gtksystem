@@ -1,4 +1,5 @@
 i3sysdialog
 .idea/
+.vscode/
 cmake*
 *.o
